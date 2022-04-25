@@ -11,21 +11,21 @@ public class Location{
 		
 	}
 	public void Move(String Key){
-		switch (Key){
-			case "A":
+		// switch (Key){
+		// 	case "A":
 				
-			case "D":
+		// 	case "D":
 				
-			case "W":
+		// 	case "W":
 				
-			case "S":
+		// 	case "S":
 					
-		}
+		// }
 	}
 	
 
 	public void Jump(){
-		roleOnKeyPressed(e->{
-			if(e.getCode()==KeyCode.SPACE)
+		// roleOnKeyPressed(e->{
+		// 	if(e.getCode()==KeyCode.SPACE)
 	}
 }

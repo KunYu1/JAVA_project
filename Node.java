@@ -4,10 +4,10 @@ public class Node{
     private int x;
     private int y;
     private int z;
-    public Node(){
-        this.x = 0;
-        this.y = 0;
-        this.z = 0;
+    public Node(int x,int y,int z){
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
     public int getx(){
         return x;
