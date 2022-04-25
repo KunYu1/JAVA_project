@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<<<<<<< HEAD
 <?import javafx.scene.layout.AnchorPane?>
 
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" />
+=======
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="WindowsController">
+   <children>
+      <Circle fx:id="Position" layoutX="300.0" layoutY="200.0" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
+      <Button fx:id="btn" layoutX="14.0" layoutY="363.0" mnemonicParsing="false" onKeyPressed="#roleOnKeyPressed" text="Button" />
+   </children>
+</AnchorPane>
+>>>>>>> 34bea24 (Wasd)
