@@ -3,15 +3,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.control.Label;
 public class Windows extends Application {
-    private MapMaker mapmaker;
-    private Map map;
 
     @Override
     public void start(Stage stage) throws Exception {
-        //init map
-        mapmaker = new MapMaker();
-        map = new Map();
 
         // draw window    
         Parent root = FXMLLoader.load(getClass().getResource("Windows.fxml"));

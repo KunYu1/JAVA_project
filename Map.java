@@ -20,4 +20,7 @@ public class Map{
         }
         sc.close();
     }
+    public ArrayList<Cube> get_cube(){
+        return cube_array;
+    }
 }
