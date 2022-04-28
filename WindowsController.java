@@ -76,7 +76,7 @@ public class WindowsController {
 				System.out.println(rot.get_node(j));
 			}
 			System.out.println("\n");
-			rot.rotatez(lookvec.xytheta(new Vec(now_loc)));
+			rot.rotatez(-lookvec.xytheta(new Vec(now_loc)));
 			for(int j=0;j<8;j++){
 				System.out.println(rot.get_node(j));
 			}
@@ -124,7 +124,7 @@ public class WindowsController {
 				map_pane.getChildren().add(polygon);
 				//System.out.println(1234);
 			}
-			if(lookvec.dot(rot.right)>0){
+			if(lookvec.dot(rot.right)<0){
 				points[0]=(double)rot.get_nodex(1)+width/2;
 				points[1]=(double)rot.get_nodez(1)+height/2;
 				points[2]=(double)rot.get_nodex(2)+width/2;
@@ -143,7 +143,7 @@ public class WindowsController {
 				map_pane.getChildren().add(polygon);
 				//System.out.println(1234);
 			}
-			if(lookvec.dot(rot.left)>0){
+			if(lookvec.dot(rot.left)<0){
 				points[0]=(double)rot.get_nodex(0)+width/2;
 				points[1]=(double)rot.get_nodez(0)+height/2;
 				points[2]=(double)rot.get_nodex(3)+width/2;
