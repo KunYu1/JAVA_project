@@ -14,6 +14,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Polygon;
 import java.util.*;
 
@@ -45,10 +47,16 @@ public class WindowsController {
 		version_vec = new Vec(0, 1, 0);
 		map = new Map();
 		cube_array = map.get_cube();
-		now_loc= new Node(0, -3, 0);
+		now_loc= new Node(0, -2, 0);
 	}
 	@FXML
 	public void initialize(){
+		//test
+		Image mud = new Image("other.png");
+		ImagePattern pattern = new ImagePattern(mud, 20, 20, 40, 40, false);
+		Image grass = new Image("top.png");
+		ImagePattern pattern_2 = new ImagePattern(grass, 20, 20, 40, 40, false);
+
 		double width = map_pane.getPrefWidth();
 		double height = map_pane.getPrefHeight();
 		System.out.println(width+" "+height);
@@ -91,7 +99,8 @@ public class WindowsController {
 				for(int j=0;j<8;j++)
 					System.out.println(points[j]);
 				polygon = new Polygon(points);
-				polygon.setFill(Color.rgb(194,255,194));
+				//polygon.setFill(Color.rgb(194,255,194));
+				polygon.setFill(pattern);
 				polygon.setStroke(Color.BLACK);
 				map_pane.getChildren().add(polygon);
 				//System.out.println();
@@ -109,7 +118,8 @@ public class WindowsController {
 				for(int j=0;j<8;j++)
 					System.out.println(points[j]);
 				polygon = new Polygon(points);
-				polygon.setFill(Color.rgb(255,194,194));
+				//polygon.setFill(Color.rgb(255,194,194));
+				polygon.setFill(pattern);
 				polygon.setStroke(Color.BLACK);
 				map_pane.getChildren().add(polygon);
 				//System.out.println(1234);
@@ -127,7 +137,8 @@ public class WindowsController {
 				for(int j=0;j<8;j++)
 					System.out.println(points[j]);
 				polygon = new Polygon(points);
-				polygon.setFill(Color.rgb(194,255,255));
+				//polygon.setFill(Color.rgb(194,255,255));
+				polygon.setFill(pattern);
 				polygon.setStroke(Color.BLACK);
 				map_pane.getChildren().add(polygon);
 				//System.out.println(1234);
@@ -145,7 +156,8 @@ public class WindowsController {
 				for(int j=0;j<8;j++)
 					System.out.println(points[j]);
 				polygon = new Polygon(points);
-				polygon.setFill(Color.rgb(255,194,255));
+				//polygon.setFill(Color.rgb(255,194,255));
+				polygon.setFill(pattern);
 				polygon.setStroke(Color.BLACK);
 				map_pane.getChildren().add(polygon);
 				//System.out.println(1234);
@@ -163,7 +175,8 @@ public class WindowsController {
 				for(int j=0;j<8;j++)
 					System.out.println(points[j]);
 				polygon = new Polygon(points);
-				polygon.setFill(Color.rgb(255,255,194));
+				//polygon.setFill(Color.rgb(255,255,194));
+				polygon.setFill(pattern);
 				polygon.setStroke(Color.BLACK);
 				map_pane.getChildren().add(polygon);
 				//System.out.println(1234);
@@ -181,7 +194,8 @@ public class WindowsController {
 				for(int j=0;j<8;j++)
 					System.out.println(points[j]);
 				polygon = new Polygon(points);
-				polygon.setFill(Color.rgb(194,194,255));
+				polygon.setFill(pattern_2);
+				//polygon.setFill(Color.rgb(194,194,255));
 				polygon.setStroke(Color.BLACK);
 				map_pane.getChildren().add(polygon);
 				//System.out.println(1234);
