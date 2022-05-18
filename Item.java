@@ -4,7 +4,7 @@ public class Item{
     private String picture_address;
     public Item(int enum_item){
         this.enum_item = enum_item;
-        this.picture_address = enum_item+".png";
+        this.picture_address = "texture/"+enum_item+".jpg";
     }
     public int get_item_num(){
         return enum_item;

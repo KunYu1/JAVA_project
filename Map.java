@@ -2,9 +2,9 @@
 import java.io.File;
 import java.util.*;
 public class Map{
-    private ArrayList<Cube> cube_array;
+    private ArrayList<MapBox> mapbox_array;
     public Map()throws Exception{
-        cube_array = new ArrayList<Cube>();
+        mapbox_array = new ArrayList<MapBox>();
         int type;
         int x;
         int y;
@@ -16,11 +16,11 @@ public class Map{
             x = sc.nextInt();
             y = sc.nextInt();
             z = sc.nextInt();
-            cube_array.add(new Cube(type, x, y, z));            
+            mapbox_array.add(new MapBox(type, x, y, z));            
         }
         sc.close();
     }
-    public ArrayList<Cube> get_cube(){
-        return cube_array;
+    public ArrayList<MapBox> get_cube(){
+        return mapbox_array;
     }
 }

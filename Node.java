@@ -1,3 +1,4 @@
+import java.rmi.server.RemoteRef;
 import java.security.cert.PKIXCertPathValidatorResult;
 
 public class Node{
@@ -23,6 +24,18 @@ public class Node{
     public double getz(){
         return z;
     }
+	public double addX(double dx){
+		this.x += dx;
+		return this.x;
+	}
+	public double addY(double dy){
+		this.y += dy;
+		return this.y;
+	}
+	public double addZ(double dz){
+		this.z += dz;
+		return this.z;
+	}
     public void setpos(double x,double y,double z){
         this.x = x;
         this.y = y;
