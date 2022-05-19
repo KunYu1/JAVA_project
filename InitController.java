@@ -18,4 +18,8 @@ public class InitController {
     // this method is called by clicking the button
     @FXML
     public void switchScene(){main.setScene(scene);}
+    @FXML
+    public void exit_scene(){
+        System.exit(0);
+    }
 }
