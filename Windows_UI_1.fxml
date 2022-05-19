@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.BoxBlur?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="InitController">
+   <children>
+      <ImageView fitHeight="600.0" fitWidth="800.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true">
+         <image>
+            <Image url="@texture/BG1.jpg" />
+         </image>
+         <effect>
+            <BoxBlur />
+         </effect>
+      </ImageView>
+      <Label alignment="CENTER" contentDisplay="TOP" layoutX="99.0" layoutY="92.0" prefHeight="106.0" prefWidth="604.0" text="JavaCraft" textAlignment="CENTER">
+         <font>
+            <Font name="Yu Gothic Bold" size="96.0" />
+         </font>
+         <textFill>
+            <LinearGradient endX="1.0" endY="1.0">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.5394737124443054" green="0.5394737124443054" blue="0.5394737124443054" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </Label>
+      <Button layoutX="261.0" layoutY="275.0" mnemonicParsing="false" onAction="#switchScene" prefHeight="50.0" prefWidth="279.0" style="-fx-background-color: rgb(163, 255, 229);" text="Play Game">
+         <font>
+            <Font size="29.0" />
+         </font>
+      </Button>
+      <Button layoutX="261.0" layoutY="350.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="126.0" style="-fx-background-color: rgb(246, 163, 255);" text="Option">
+         <font>
+            <Font size="19.0" />
+         </font></Button>
+      <Button layoutX="414.0" layoutY="350.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="126.0" style="-fx-background-color: rgb(246, 163, 255);" text="Quit Game">
+         <font>
+            <Font size="19.0" />
+         </font></Button>
+   </children>
+</AnchorPane>

@@ -6,7 +6,7 @@ public class MapMaker{
         String encoding = "UTF-8";
         try{
             PrintWriter writer = new PrintWriter(fileName, encoding);
-            for(int k = 1;k<=10;k++){
+            for(int k = 2;k<=10;k++){
                 for(int i=-k;i<=k;i+=1)
                     for(int j=-k;j<=k;j+=1)
                         writer.println("3"+" "+i+" "+k+" "+j);
