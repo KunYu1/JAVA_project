@@ -30,6 +30,9 @@ import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.binding.BooleanBinding;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -50,6 +53,16 @@ public class WindowsController {
     private Circle Position;
 	@FXML
 	private Group group;
+
+	private BooleanProperty forwardPressed = new SimpleBooleanProperty(false);
+	private BooleanProperty backPressed = new SimpleBooleanProperty(false);
+	private BooleanProperty rightPressed = new SimpleBooleanProperty(false);
+	private BooleanProperty leftPressed = new SimpleBooleanProperty(false);
+	private BooleanProperty spacePressed = new SimpleBooleanProperty(false);
+
+	private BooleanBinding anyPressed = forwardPressed.or(rightPressed.or(leftPressed.or(backPressed).or(spacePressed)));
+
+
 
 	private final DoubleProperty angleX = new SimpleDoubleProperty(0);
     private final DoubleProperty angleY = new SimpleDoubleProperty(0);
@@ -128,8 +141,12 @@ public class WindowsController {
             new Translate(0, 0, 0)
         );
 	}
+
 	@FXML
 	public void initialize(){
+		System.out.println(anyPressed.get());
+		rightPressed.set(false);
+		System.out.println(anyPressed.get());
 		//load picture
 		PhongMaterial material_1 = new PhongMaterial();
 		material_1.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/2.jpg")));
@@ -154,26 +171,36 @@ public class WindowsController {
 		}
 		xRotate.angleProperty().bind(angleX);
         yRotate.angleProperty().bind(angleY);
+		AnimationTimer timer = new AnimationTimer() {
+			@Override
+			public void handle(long timestamp) {
+				if (forwardPressed.get()) {
+					camera.translateZProperty().set(camera.getTranslateZ() + velocity*Math.cos(yRotate.getAngle()*(Math.PI)/180));
+					camera.translateXProperty().set(camera.getTranslateX() + velocity*Math.sin(yRotate.getAngle()*(Math.PI)/180));
+				}
+				if (rightPressed.get()) {
+					camera.translateZProperty().set(camera.getTranslateZ() - velocity*Math.sin(yRotate.getAngle()*(Math.PI)/180));
+					camera.translateXProperty().set(camera.getTranslateX() + velocity*Math.cos(yRotate.getAngle()*(Math.PI)/180));
+				}
+			}
+		};
+		
 	}
 	
 	@FXML
 	private void keyPressed(KeyEvent keyEvent){
 		switch (keyEvent.getCode()) {
 			case W:
-				camera.translateZProperty().set(camera.getTranslateZ() + velocity*Math.cos(yRotate.getAngle()*(Math.PI)/180));
-				camera.translateXProperty().set(camera.getTranslateX() + velocity*Math.sin(yRotate.getAngle()*(Math.PI)/180));
+				forwardPressed.set(true);
 				break;
 			case S:
-				camera.translateZProperty().set(camera.getTranslateZ() - velocity*Math.cos(yRotate.getAngle()*(Math.PI)/180));
-				camera.translateXProperty().set(camera.getTranslateX() - velocity*Math.sin(yRotate.getAngle()*(Math.PI)/180));
+				backPressed.set(true);
 				break;
 			case D:
-				camera.translateZProperty().set(camera.getTranslateZ() - velocity*Math.sin(yRotate.getAngle()*(Math.PI)/180));
-				camera.translateXProperty().set(camera.getTranslateX() + velocity*Math.cos(yRotate.getAngle()*(Math.PI)/180));
+				rightPressed.set(true);
 				break;
 			case A:
-				camera.translateZProperty().set(camera.getTranslateZ() + velocity*Math.sin(yRotate.getAngle()*(Math.PI)/180));
-				camera.translateXProperty().set(camera.getTranslateX() - velocity*Math.cos(yRotate.getAngle()*(Math.PI)/180));
+				leftPressed.set(true);
 				break;
 			case E:
 				camera.translateYProperty().set(camera.getTranslateY() - 200);
@@ -182,41 +209,86 @@ public class WindowsController {
 				camera.translateYProperty().set(camera.getTranslateY() + 200);
 				break;
 			case SPACE:
-				System.out.println("junp");
-				if (jump_flag==0)
-				{
-					double tmp = camera.getTranslateY();	
-					jump_flag=1;
-					AnimationTimer timer = new AnimationTimer() {
-						double dt=0;
-						@Override
-						public void handle(long now) {
-							if(dt<20){
-								dt+=1;
-								camera.translateYProperty().set(camera.getTranslateY()+(2.4*dt-24));	
-							}
-							System.out.println(camera.getTranslateY());
-							if(dt>=20){
-								camera.translateYProperty().set(tmp);
-								System.out.println("jump_flag=0");
-								jump_flag=0;
-								stop();
-								//System.out.println("=0");
-							}
-						}
-					};
-					//System.out.println(hand.getTranslateY());
-					timer.start();
-					break;
-				}
-				else if(jump_flag==1){
-					break;
-				}
+				spacePressed.set(true);
 				break;
+			// case W:
+			// 	camera.translateZProperty().set(camera.getTranslateZ() + velocity*Math.cos(yRotate.getAngle()*(Math.PI)/180));
+			// 	camera.translateXProperty().set(camera.getTranslateX() + velocity*Math.sin(yRotate.getAngle()*(Math.PI)/180));
+			// 	break;
+			// case S:
+			// 	camera.translateZProperty().set(camera.getTranslateZ() - velocity*Math.cos(yRotate.getAngle()*(Math.PI)/180));
+			// 	camera.translateXProperty().set(camera.getTranslateX() - velocity*Math.sin(yRotate.getAngle()*(Math.PI)/180));
+			// 	break;
+			// case D:
+			// 	camera.translateZProperty().set(camera.getTranslateZ() - velocity*Math.sin(yRotate.getAngle()*(Math.PI)/180));
+			// 	camera.translateXProperty().set(camera.getTranslateX() + velocity*Math.cos(yRotate.getAngle()*(Math.PI)/180));
+			// 	break;
+			// case A:
+			// 	camera.translateZProperty().set(camera.getTranslateZ() + velocity*Math.sin(yRotate.getAngle()*(Math.PI)/180));
+			// 	camera.translateXProperty().set(camera.getTranslateX() - velocity*Math.cos(yRotate.getAngle()*(Math.PI)/180));
+			// 	break;
+			// case E:
+			// 	camera.translateYProperty().set(camera.getTranslateY() - 200);
+			// 	break;
+			// case C:
+			// 	camera.translateYProperty().set(camera.getTranslateY() + 200);
+			// 	break;
+			// case SPACE:
+			// 	System.out.println("junp");
+			// 	if (jump_flag==0)
+			// 	{
+			// 		double tmp = camera.getTranslateY();	
+			// 		jump_flag=1;
+			// 		AnimationTimer timer = new AnimationTimer() {
+			// 			double dt=0;
+			// 			@Override
+			// 			public void handle(long now) {
+			// 				if(dt<20){
+			// 					dt+=1;
+			// 					camera.translateYProperty().set(camera.getTranslateY()+(2.4*dt-24));	
+			// 				}
+			// 				System.out.println(camera.getTranslateY());
+			// 				if(dt>=20){
+			// 					camera.translateYProperty().set(tmp);
+			// 					System.out.println("jump_flag=0");
+			// 					jump_flag=0;
+			// 					stop();
+			// 					//System.out.println("=0");
+			// 				}
+			// 			}
+			// 		};
+			// 		//System.out.println(hand.getTranslateY());
+			// 		timer.start();
+			// 		break;
+			// 	}
+			// 	else if(jump_flag==1){
+			// 		break;
+			// 	}
+			// 	break;
+			}
 		}
-		this.set_pointLight(camera.getTranslateX(),camera.getTranslateY(),camera.getTranslateZ());
-		System.out.println(camera.getTranslateX()+" "+camera.getTranslateY()+" "+camera.getTranslateZ());
-	}
+		@FXML
+		private void keyReleased(KeyEvent keyEvent){
+			switch (keyEvent.getCode()) {
+				case W:
+					forwardPressed.set(false);
+					break;
+				case S:
+					backPressed.set(false);
+					break;
+				case D:
+					rightPressed.set(false);
+					break;
+				case A:
+					leftPressed.set(false);
+					break;
+				case SPACE:
+					spacePressed.set(false);
+					break;
+		//this.set_pointLight(camera.getTranslateX(),camera.getTranslateY(),camera.getTranslateZ());
+		//System.out.println(camera.getTranslateX()+" "+camera.getTranslateY()+" "+camera.getTranslateZ());
+			}
+		}
 	public void set_pointLight(double x, double y,double z){
 		pointLight.setTranslateX(x);
 		pointLight.setTranslateY(y-100);
