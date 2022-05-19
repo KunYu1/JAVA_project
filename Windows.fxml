@@ -10,7 +10,7 @@
       <AnchorPane layoutX="7.0" layoutY="38.0" prefHeight="258.0" prefWidth="216.0">
          <children>
             <Button layoutX="145.0" layoutY="193.0" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" onKeyPressed="#keyPressed" onKeyReleased="#keyReleased" prefHeight="0.0" prefWidth="0.0" text="Button" />
-            <Button layoutX="1.0" layoutY="-46.0" mnemonicParsing="false" onAction="#switchScene" prefHeight="97.0" prefWidth="216.0" text="back">
+            <Button focusTraversable="false" layoutX="1.0" layoutY="-46.0" mnemonicParsing="false" onAction="#switchScene" prefHeight="97.0" prefWidth="216.0" text="back">
                <font>
                   <Font size="54.0" />
                </font>

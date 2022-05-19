@@ -59,8 +59,9 @@ public class WindowsController {
 	private BooleanProperty rightPressed = new SimpleBooleanProperty(false);
 	private BooleanProperty leftPressed = new SimpleBooleanProperty(false);
 	private BooleanProperty spacePressed = new SimpleBooleanProperty(false);
+	private BooleanProperty jumping = new SimpleBooleanProperty(false);
 
-	private BooleanBinding anyPressed = forwardPressed.or(rightPressed.or(leftPressed.or(backPressed).or(spacePressed)));
+	private BooleanBinding anyPressed = forwardPressed.or(rightPressed.or(leftPressed.or(backPressed).or(spacePressed.or(jumping))));
 
 
 
@@ -70,7 +71,7 @@ public class WindowsController {
 	private double anchorX, anchorY;
     private double anchorAngleXZ = 0;
     private double anchorAngleY = 0;
-    private double velocity = 20;	
+    private double velocity = 50;	
     private PerspectiveCamera perspectiveCamera;
 	private ArrayList<MapBox> mapbox_array;
 	private Node now_loc;
@@ -97,9 +98,9 @@ public class WindowsController {
         });
 		scene.setOnMouseDragged(event -> {
             anchorAngleY = angleY.get();
-            double rotation = (anchorAngleY - (anchorX - event.getSceneX())*0.1);
+            double rotation = (anchorAngleY - (anchorX - event.getSceneX())*0.2);
             angleY.set(rotation);
-            double tmp_angle = (anchorAngleXZ + (anchorY - event.getSceneY())*0.1);
+            double tmp_angle = (anchorAngleXZ + (anchorY - event.getSceneY())*0.2);
             if(tmp_angle<=-80){
                 angleX.set(-80); 
                 anchorAngleXZ = -80;          
@@ -171,9 +172,13 @@ public class WindowsController {
 		}
 		xRotate.angleProperty().bind(angleX);
         yRotate.angleProperty().bind(angleY);
+
 		AnimationTimer timer = new AnimationTimer() {
+			double tmp = camera.getTranslateY();	
+			double dt=0;
 			@Override
 			public void handle(long timestamp) {
+				//System.out.println(timestamp);
 				if (forwardPressed.get()) {
 					camera.translateZProperty().set(camera.getTranslateZ() + velocity*Math.cos(yRotate.getAngle()*(Math.PI)/180));
 					camera.translateXProperty().set(camera.getTranslateX() + velocity*Math.sin(yRotate.getAngle()*(Math.PI)/180));
@@ -182,8 +187,41 @@ public class WindowsController {
 					camera.translateZProperty().set(camera.getTranslateZ() - velocity*Math.sin(yRotate.getAngle()*(Math.PI)/180));
 					camera.translateXProperty().set(camera.getTranslateX() + velocity*Math.cos(yRotate.getAngle()*(Math.PI)/180));
 				}
+				if (leftPressed.get()) {
+					camera.translateZProperty().set(camera.getTranslateZ() + velocity*Math.sin(yRotate.getAngle()*(Math.PI)/180));
+					camera.translateXProperty().set(camera.getTranslateX() - velocity*Math.cos(yRotate.getAngle()*(Math.PI)/180));
+				}
+				if (backPressed.get()) {
+					camera.translateZProperty().set(camera.getTranslateZ() - velocity*Math.cos(yRotate.getAngle()*(Math.PI)/180));
+					camera.translateXProperty().set(camera.getTranslateX() - velocity*Math.sin(yRotate.getAngle()*(Math.PI)/180));
+				}
+				if (!jumping.get()&&spacePressed.get())	{
+					tmp = camera.getTranslateY();	
+					jumping.set(true);
+					dt=0;
+				} 
+				if(jumping.get()){
+					if(dt<20){
+						dt+=1;
+						camera.translateYProperty().set(camera.getTranslateY()+(2.8*dt-28));	
+					}
+					System.out.println(camera.getTranslateY());
+					if(dt>=20){
+						camera.translateYProperty().set(tmp);
+						System.out.println("jump_flag=0");
+						jumping.set(false);
+					}
+				}
+				set_pointLight(camera.getTranslateX(),camera.getTranslateY(),camera.getTranslateZ());
 			}
 		};
+		anyPressed.addListener((obs, wasPressed, isNowPressed) ->{
+			if(isNowPressed){
+				timer.start();
+			} else{
+				timer.stop();
+			}
+		});
 		
 	}
 	
