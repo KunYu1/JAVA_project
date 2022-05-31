@@ -37,7 +37,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
-
+import javafx.scene.robot.Robot;
+import java.awt.AWTException;
 import java.util.*;
 
 public class WindowsController {
@@ -60,8 +61,9 @@ public class WindowsController {
 	private BooleanProperty leftPressed = new SimpleBooleanProperty(false);
 	private BooleanProperty spacePressed = new SimpleBooleanProperty(false);
 	private BooleanProperty jumping = new SimpleBooleanProperty(false);
+	private BooleanProperty mouse = new SimpleBooleanProperty(false);
 
-	private BooleanBinding anyPressed = forwardPressed.or(rightPressed.or(leftPressed.or(backPressed).or(spacePressed.or(jumping))));
+	private BooleanBinding anyPressed = forwardPressed.or(rightPressed.or(leftPressed.or(backPressed).or(spacePressed.or(jumping.or(mouse)))));
 
 
 
@@ -85,36 +87,68 @@ public class WindowsController {
 	Rotate xRotate;
 	Rotate yRotate;
 	Rotate zRotate;
+	double an_x = 0;
+	double an_y = 0;
 	int jump_flag = 0;
+	int flag ;
+	Robot robot;
 
 	public void setSelfScene(Scene scene){
 		this.scene = scene;
 		scene.setCamera(camera);
-		scene.setOnMousePressed(event -> {
-            //System.out.println(1);
-            anchorX = event.getSceneX();
-            anchorY = event.getSceneY();
-            anchorAngleY = angleY.get();
-        });
-		scene.setOnMouseDragged(event -> {
-            anchorAngleY = angleY.get();
-            double rotation = (anchorAngleY - (anchorX - event.getSceneX())*0.2);
-            angleY.set(rotation);
-            double tmp_angle = (anchorAngleXZ + (anchorY - event.getSceneY())*0.2);
-            if(tmp_angle<=-80){
-                angleX.set(-80); 
-                anchorAngleXZ = -80;          
-            } else if(tmp_angle>=80){
-                angleX.set(80);  
-                anchorAngleXZ = 80;              
-            } else{
-                angleX.set(tmp_angle);
-                anchorAngleXZ = tmp_angle; 
+		flag = 0;
+		scene.setOnMouseMoved(event -> {
+			//System.out.println(anchorX+" "+anchorY);
+			//System.out.println(robot.getMouseX()+" "+robot.getMouseY());
+			if(flag == 0){
+				anchorX = event.getSceneX();
+				anchorY = event.getSceneY();
+				flag = 1;
+				return;
+			}
+			if(flag == 2){
+				anchorX = event.getSceneX();
+				anchorY = event.getSceneY();
+				flag = 0;
+				return;
+			}
+			an_x += (anchorX - event.getSceneX())*0.1;
+			an_y += (anchorY - event.getSceneY())*0.1;
+			System.out.println(an_x+" "+an_y);
+            //anchorAngleY = angleY.get();
+            // double rotation = (anchorAngleY - (anchorX - event.getSceneX())*0.1);
+            // angleY.set(rotation);
+            //double tmp_angle = (anchorAngleXZ + (anchorY - event.getSceneY())*0.1);
+			//System.out.println((anchorX - event.getSceneX())+" "+(anchorY - event.getSceneY())+" "+anchorX+" "+anchorY);
+            // if(tmp_angle<=-80){
+            //     angleX.set(-80); 
+            //     anchorAngleXZ = -80;          
+            // } else if(tmp_angle>=80){
+            //     angleX.set(80);  
+            //     anchorAngleXZ = 80;              
+            // } else{
+            //     angleX.set(tmp_angle);
+            //     anchorAngleXZ = tmp_angle; 
+            // }
+			if(angleX.get()+an_y<=-80){
+				an_y = 0;
+                //angleX.set(-80); 
+                //anchorAngleXZ = -80;          
+            } else if(angleX.get()+an_y>=80){
+                an_y = 0;
+				// angleX.set(80);  
+                // anchorAngleXZ = 80;              
             }
+			if(an_x!=0||an_y!=0)
+				mouse.set(true);
             anchorX = event.getSceneX();
             anchorY = event.getSceneY();
-            //System.out.println(camera.getTransforms());
+			//System.out.println(camera.getTransforms());
         });
+		scene.setOnMouseExited(event -> {
+			robot.mouseMove(960,540);
+			flag =2;
+		});
 	}
     public void setMain(Windows main){
         this.main = main;
@@ -123,7 +157,6 @@ public class WindowsController {
         this.scene_j = scene;
     }
     // this method is called by clicking the button
-    @FXML
     public void switchScene(){main.setScene(scene_j);}
 
 	public WindowsController()throws Exception{
@@ -141,6 +174,9 @@ public class WindowsController {
             xRotate = new Rotate(0, Rotate.X_AXIS),
             new Translate(0, 0, 0)
         );
+		robot = new Robot();
+		//robot.mouseMove(960, 540); //can modify
+		//System.out.println(robot.getMouseX()+" "+robot.getMouseY());
 	}
 
 	@FXML
@@ -148,6 +184,7 @@ public class WindowsController {
 		System.out.println(anyPressed.get());
 		rightPressed.set(false);
 		System.out.println(anyPressed.get());
+
 		//load picture
 		PhongMaterial material_1 = new PhongMaterial();
 		material_1.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/2.jpg")));
@@ -178,6 +215,12 @@ public class WindowsController {
 			double dt=0;
 			@Override
 			public void handle(long timestamp) {
+				double rotation = (angleY.get() - an_x);
+            	angleY.set(rotation);
+            	double tmp_angle = (angleX.get() + an_y);
+				angleX.set(tmp_angle);
+				an_x = 0;
+				an_y = 0;
 				//System.out.println(timestamp);
 				if (forwardPressed.get()) {
 					camera.translateZProperty().set(camera.getTranslateZ() + velocity*Math.cos(yRotate.getAngle()*(Math.PI)/180));
@@ -203,7 +246,7 @@ public class WindowsController {
 				if(jumping.get()){
 					if(dt<20){
 						dt+=1;
-						camera.translateYProperty().set(camera.getTranslateY()+(2.8*dt-28));	
+						camera.translateYProperty().set(camera.getTranslateY()+(7*dt-70));	
 					}
 					System.out.println(camera.getTranslateY());
 					if(dt>=20){
@@ -213,6 +256,8 @@ public class WindowsController {
 					}
 				}
 				set_pointLight(camera.getTranslateX(),camera.getTranslateY(),camera.getTranslateZ());
+				mouse.set(false);
+				System.out.println(camera.getTranslateX()+" "+camera.getTranslateY()+" "+camera.getTranslateZ());
 			}
 		};
 		anyPressed.addListener((obs, wasPressed, isNowPressed) ->{
@@ -249,6 +294,9 @@ public class WindowsController {
 			case SPACE:
 				spacePressed.set(true);
 				break;
+			case L:
+				switchScene();
+
 			// case W:
 			// 	camera.translateZProperty().set(camera.getTranslateZ() + velocity*Math.cos(yRotate.getAngle()*(Math.PI)/180));
 			// 	camera.translateXProperty().set(camera.getTranslateX() + velocity*Math.sin(yRotate.getAngle()*(Math.PI)/180));
