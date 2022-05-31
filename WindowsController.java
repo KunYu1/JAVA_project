@@ -39,8 +39,8 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.robot.Robot;
 import java.awt.AWTException;
+import javafx.scene.shape.Rectangle;
 import java.util.*;
-
 public class WindowsController {
 	String Key;
 	double x=0,y=0;
@@ -54,7 +54,12 @@ public class WindowsController {
     private Circle Position;
 	@FXML
 	private Group group;
+    @FXML
+    private Rectangle Rect;
+    @FXML
+    private Box box;
 
+	
 	private BooleanProperty forwardPressed = new SimpleBooleanProperty(false);
 	private BooleanProperty backPressed = new SimpleBooleanProperty(false);
 	private BooleanProperty rightPressed = new SimpleBooleanProperty(false);
@@ -63,7 +68,17 @@ public class WindowsController {
 	private BooleanProperty jumping = new SimpleBooleanProperty(false);
 	private BooleanProperty mouse = new SimpleBooleanProperty(false);
 
-	private BooleanBinding anyPressed = forwardPressed.or(rightPressed.or(leftPressed.or(backPressed).or(spacePressed.or(jumping.or(mouse)))));
+	private BooleanProperty num_1 = new SimpleBooleanProperty(false);
+	private BooleanProperty num_2 = new SimpleBooleanProperty(false);
+	private BooleanProperty num_3 = new SimpleBooleanProperty(false);
+	private BooleanProperty num_4 = new SimpleBooleanProperty(false);
+	private BooleanProperty num_5 = new SimpleBooleanProperty(false);
+	private BooleanProperty num_6 = new SimpleBooleanProperty(false);
+	private BooleanProperty num_7 = new SimpleBooleanProperty(false);
+	private BooleanProperty num_8 = new SimpleBooleanProperty(false);
+	private BooleanProperty num_9 = new SimpleBooleanProperty(false);
+	private BooleanBinding anyPressed = num_9.or(num_8.or(num_7.or(num_6.or(num_5.or(num_4.or(num_3.or(num_2.or(num_1.or
+				(forwardPressed.or(rightPressed.or(leftPressed.or(backPressed).or(spacePressed.or(jumping.or(mouse)))))	)))))))));
 
 
 
@@ -181,16 +196,33 @@ public class WindowsController {
 
 	@FXML
 	public void initialize(){
+
+		
 		System.out.println(anyPressed.get());
 		rightPressed.set(false);
 		System.out.println(anyPressed.get());
 
 		//load picture
 		PhongMaterial material_1 = new PhongMaterial();
-		material_1.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/2.jpg")));
+		material_1.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/1.jpg")));
 		//material_1.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/earth-d.jpg")));
 		PhongMaterial material_3 = new PhongMaterial();
 		material_3.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/3.jpg")));
+		
+		PhongMaterial material_2 = new PhongMaterial();
+		material_2.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/2.jpg")));	
+		PhongMaterial material_4 = new PhongMaterial();
+		material_4.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/10.jpg")));	
+		PhongMaterial material_5 = new PhongMaterial();
+		material_5.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/5.jpg")));	
+		PhongMaterial material_6 = new PhongMaterial();
+		material_6.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/6.jpg")));
+		PhongMaterial material_7 = new PhongMaterial();
+		material_7.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/7.jpg")));	
+		PhongMaterial material_8 = new PhongMaterial();
+		material_8.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/8.jpg")));	
+		PhongMaterial material_9 = new PhongMaterial();
+		material_9.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/9.jpg")));
 		
 		pointLight = new PointLight();
         pointLight.setColor(Color.WHITE);
@@ -209,7 +241,7 @@ public class WindowsController {
 		}
 		xRotate.angleProperty().bind(angleX);
         yRotate.angleProperty().bind(angleY);
-
+		box.setMaterial(material_1);
 		AnimationTimer timer = new AnimationTimer() {
 			double tmp = camera.getTranslateY();	
 			double dt=0;
@@ -222,6 +254,43 @@ public class WindowsController {
 				an_x = 0;
 				an_y = 0;
 				//System.out.println(timestamp);
+				if(num_1.get()){
+					box.setMaterial(material_1);
+					Rect.setX(-1);
+				}
+				if(num_2.get()){
+					box.setMaterial(material_2);
+					Rect.setX(36);
+				}
+				if(num_3.get()){
+					box.setMaterial(material_3);
+					Rect.setX(73);
+					
+				}
+				if(num_4.get()){
+					box.setMaterial(material_4);
+					Rect.setX(110);
+				}
+				if(num_5.get()){
+					box.setMaterial(material_5);
+					Rect.setX(147);
+				}
+				if(num_6.get()){
+					box.setMaterial(material_6);
+					Rect.setX(184);
+				}
+				if(num_7.get()){
+					box.setMaterial(material_7);
+					Rect.setX(221);
+				}
+				if(num_8.get()){
+					box.setMaterial(material_8);
+					Rect.setX(258);
+				}
+				if(num_9.get()){
+					box.setMaterial(material_9);
+					Rect.setX(295);
+				}
 				if (forwardPressed.get()) {
 					camera.translateZProperty().set(camera.getTranslateZ() + velocity*Math.cos(yRotate.getAngle()*(Math.PI)/180));
 					camera.translateXProperty().set(camera.getTranslateX() + velocity*Math.sin(yRotate.getAngle()*(Math.PI)/180));
@@ -296,7 +365,34 @@ public class WindowsController {
 				break;
 			case L:
 				switchScene();
+			case DIGIT1:
+				num_1.set(true);
+				break;
 
+			case DIGIT2:
+				num_2.set(true);
+				break;
+			case DIGIT3:
+				num_3.set(true);
+				break;	
+			case DIGIT4:
+				num_4.set(true);
+				break;
+			case DIGIT5:
+				num_5.set(true);
+				break;
+			case DIGIT6:
+				num_6.set(true);
+				break;
+			case DIGIT7:
+				num_7.set(true);
+				break;
+			case DIGIT8:
+				num_8.set(true);
+				break;
+			case DIGIT9:
+				num_9.set(true);
+				break;
 			// case W:
 			// 	camera.translateZProperty().set(camera.getTranslateZ() + velocity*Math.cos(yRotate.getAngle()*(Math.PI)/180));
 			// 	camera.translateXProperty().set(camera.getTranslateX() + velocity*Math.sin(yRotate.getAngle()*(Math.PI)/180));
@@ -370,6 +466,33 @@ public class WindowsController {
 					break;
 				case SPACE:
 					spacePressed.set(false);
+					break;
+				case DIGIT1:
+					num_1.set(false);
+					break;
+				case DIGIT2:
+					num_2.set(false);
+					break;
+				case DIGIT3:
+					num_3.set(false);
+					break;	
+				case DIGIT4:
+					num_4.set(false);
+					break;
+				case DIGIT5:
+					num_5.set(false);
+					break;
+				case DIGIT6:
+					num_6.set(false);
+					break;
+				case DIGIT7:
+					num_7.set(false);
+					break;
+				case DIGIT8:
+					num_8.set(false);
+					break;
+				case DIGIT9:
+					num_9.set(false);
 					break;
 		//this.set_pointLight(camera.getTranslateX(),camera.getTranslateY(),camera.getTranslateZ());
 		//System.out.println(camera.getTranslateX()+" "+camera.getTranslateY()+" "+camera.getTranslateZ());

@@ -21,7 +21,9 @@ import javafx.geometry.Point3D;
 import javafx.scene.Group;
 import javafx.scene.ImageCursor;
 import javafx.scene.image.Image;
-
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import java.nio.file.Paths;
 public class Windows extends Application {
     // private final DoubleProperty angleX = new SimpleDoubleProperty(0);
     // private final DoubleProperty angleY = new SimpleDoubleProperty(0);
@@ -35,7 +37,7 @@ public class Windows extends Application {
     // private double velocity = 20;
     @Override
     public void start(Stage stage) throws Exception {
-        
+        music();
         now_stage = stage;
         // draw window   
 
@@ -67,6 +69,14 @@ public class Windows extends Application {
     public void setScene(Scene scene){
         now_stage.setScene(scene);
     }
+	MediaPlayer mediaPlayer;
+	public void music() {
+		String s = "MineCraft.mp3";
+		Media h = new Media(Paths.get(s).toUri().toString());
+		mediaPlayer = new MediaPlayer(h);
+		mediaPlayer.play();
+		
+	}
     public static void main(String[] args) {
         launch(args);
     }
