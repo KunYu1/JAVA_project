@@ -6,6 +6,7 @@ import javafx.scene.input.KeyCode;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.util.Duration;
+import javafx.geometry.Point3D;
 import java.security.SecureRandom;
 import javafx.animation.AnimationTimer;
 import javafx.animation.Timeline;
@@ -147,8 +148,12 @@ public class WindowsController {
 		});
 		scene.setOnMousePressed(event -> {
 			System.out.println("explosion!!!!!!");
-			System.out.println( now_loc.box.getTranslateX()+" "+now_loc.box.getTranslateY()+" "+now_loc.box.getTranslateZ());
-			map.break_map(group, camera.getTranslateX(),camera.getTranslateY(),camera.getTranslateZ(), now_loc.box.getTranslateX(),now_loc.box.getTranslateY(),now_loc.box.getTranslateZ());
+			System.out.println(angleX.get()+" "+angleY.get());
+			double v_x = 100*Math.cos(angleX.get()*(Math.PI)/180)*Math.sin(angleY.get()*(Math.PI)/180);
+			double v_y = 100*Math.sin(angleX.get()*(Math.PI)/180);
+			double v_z = 100*Math.cos(angleX.get()*(Math.PI)/180)*Math.cos(angleY.get()*(Math.PI)/180);
+			System.out.println(v_x+" "+v_y+" "+v_z);
+			map.break_map(group, camera.getTranslateX(),camera.getTranslateY(),camera.getTranslateZ(),v_x,v_y,v_z);
 		});
 	}
     public void setMain(Windows main){
@@ -171,10 +176,11 @@ public class WindowsController {
             xRotate = new Rotate(0, Rotate.X_AXIS),
             new Translate(0, 0, 100)
 		);
+		//System.out.println( now_loc.box_visible.getTranslateX()+" "+now_loc.box_visible.getTranslateY()+" "+now_loc.box_visible.getTranslateZ());
 		now_loc.box.getTransforms().addAll(
             yRotate,                      
             xRotate,
-            new Translate(0, 0, 100)
+            new Translate(0, 0, 0)
 		);
     	camera = new PerspectiveCamera(true);
         camera.setNearClip(1);

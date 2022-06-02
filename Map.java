@@ -40,14 +40,15 @@ public class Map{
             y = mapbox_array.get(i).box.getTranslateY();
             z = mapbox_array.get(i).box.getTranslateZ();
             d_x = x-now_x;
-            d_y = y-now_y;
+            d_y = now_y-y;
             d_z = z-now_z;
             l = Math.sqrt(d_x*d_x+d_y*d_y+d_z*d_z);
             //System.out.println(l+" "+v_x*d_x+v_y*d_y+v_z*d_z);
-            if(Math.abs(d_x)<600&&Math.abs(d_y)<600&&Math.abs(d_z)<600){
-                System.out.println(d_x+" "+d_y+" "+d_z+" "+(v_x*d_x+v_y*d_y+v_z*d_z));
-                if((v_x*d_x+v_y*d_y+v_z*d_z)/(100*l)>0.5&&l<length){
+            if(Math.abs(d_x)<800&&Math.abs(d_y)<800&&Math.abs(d_z)<800){
+                System.out.println(i+" "+d_x+" "+d_y+" "+d_z+" "+(v_x*d_x+v_y*d_y+v_z*d_z)/(100*l)+" "+l);
+                if((v_x*d_x+v_y*d_y+v_z*d_z)/(100*l)>0.99&&l<length){
                     break_idx = i;
+                    length =l;
                 }             
             }
         }
