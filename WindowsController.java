@@ -22,6 +22,7 @@ import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Transform;
 import javafx.scene.Camera;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.PerspectiveCamera;
 import javafx.stage.Stage;
 import javafx.scene.paint.PhongMaterial;
@@ -80,8 +81,6 @@ public class WindowsController {
 	private BooleanBinding anyPressed = num_9.or(num_8.or(num_7.or(num_6.or(num_5.or(num_4.or(num_3.or(num_2.or(num_1.or
 				(forwardPressed.or(rightPressed.or(leftPressed.or(backPressed).or(spacePressed.or(jumping.or(mouse)))))	)))))))));
 
-
-
 	private final DoubleProperty angleX = new SimpleDoubleProperty(0);
     private final DoubleProperty angleY = new SimpleDoubleProperty(0);
 	private Scene scene;
@@ -91,13 +90,17 @@ public class WindowsController {
     private double velocity = 50;	
     private PerspectiveCamera perspectiveCamera;
 	private ArrayList<MapBox> mapbox_array;
-	private Node now_loc;
+	//private Node now_loc;
+	private Person now_loc;
 	private MapMaker mapmaker;
-	private Vec version_vec;
+	//private Vec version_vec;
     private Map map;
 	private PointLight pointLight;
 	private Scene scene_j;
     private Windows main;
+	private PhongMaterial material_1;
+	private PhongMaterial material_2;
+	private PhongMaterial material_3;
 	Camera camera ;
 	Rotate xRotate;
 	Rotate yRotate;
@@ -113,8 +116,6 @@ public class WindowsController {
 		scene.setCamera(camera);
 		flag = 0;
 		scene.setOnMouseMoved(event -> {
-			//System.out.println(anchorX+" "+anchorY);
-			//System.out.println(robot.getMouseX()+" "+robot.getMouseY());
 			if(flag == 0){
 				anchorX = event.getSceneX();
 				anchorY = event.getSceneY();
@@ -129,40 +130,25 @@ public class WindowsController {
 			}
 			an_x += (anchorX - event.getSceneX())*0.1;
 			an_y += (anchorY - event.getSceneY())*0.1;
-			System.out.println(an_x+" "+an_y);
-            //anchorAngleY = angleY.get();
-            // double rotation = (anchorAngleY - (anchorX - event.getSceneX())*0.1);
-            // angleY.set(rotation);
-            //double tmp_angle = (anchorAngleXZ + (anchorY - event.getSceneY())*0.1);
-			//System.out.println((anchorX - event.getSceneX())+" "+(anchorY - event.getSceneY())+" "+anchorX+" "+anchorY);
-            // if(tmp_angle<=-80){
-            //     angleX.set(-80); 
-            //     anchorAngleXZ = -80;          
-            // } else if(tmp_angle>=80){
-            //     angleX.set(80);  
-            //     anchorAngleXZ = 80;              
-            // } else{
-            //     angleX.set(tmp_angle);
-            //     anchorAngleXZ = tmp_angle; 
-            // }
+			//System.out.println(an_x+" "+an_y);
 			if(angleX.get()+an_y<=-80){
-				an_y = 0;
-                //angleX.set(-80); 
-                //anchorAngleXZ = -80;          
+				an_y = 0;        
             } else if(angleX.get()+an_y>=80){
-                an_y = 0;
-				// angleX.set(80);  
-                // anchorAngleXZ = 80;              
+                an_y = 0;            
             }
 			if(an_x!=0||an_y!=0)
 				mouse.set(true);
             anchorX = event.getSceneX();
             anchorY = event.getSceneY();
-			//System.out.println(camera.getTransforms());
         });
 		scene.setOnMouseExited(event -> {
 			robot.mouseMove(960,540);
 			flag =2;
+		});
+		scene.setOnMousePressed(event -> {
+			System.out.println("explosion!!!!!!");
+			System.out.println( now_loc.box.getTranslateX()+" "+now_loc.box.getTranslateY()+" "+now_loc.box.getTranslateZ());
+			map.break_map(group, camera.getTranslateX(),camera.getTranslateY(),camera.getTranslateZ(), now_loc.box.getTranslateX(),now_loc.box.getTranslateY(),now_loc.box.getTranslateZ());
 		});
 	}
     public void setMain(Windows main){
@@ -171,45 +157,49 @@ public class WindowsController {
     public void setScene(Scene scene){
         this.scene_j = scene;
     }
-    // this method is called by clicking the button
+
     public void switchScene(){main.setScene(scene_j);}
 
 	public WindowsController()throws Exception{
 		//init map
 		mapmaker = new MapMaker();
-		version_vec = new Vec(0, 1, 0);
 		map = new Map();
 		mapbox_array = map.get_cube();
-		now_loc= new Node(0, 0, 0);
+		now_loc= new Person();
+		now_loc.box_visible.getTransforms().addAll(
+            yRotate = new Rotate(0, Rotate.Y_AXIS),                      
+            xRotate = new Rotate(0, Rotate.X_AXIS),
+            new Translate(0, 0, 100)
+		);
+		now_loc.box.getTransforms().addAll(
+            yRotate,                      
+            xRotate,
+            new Translate(0, 0, 100)
+		);
     	camera = new PerspectiveCamera(true);
         camera.setNearClip(1);
         camera.setFarClip(30000);  
         camera.getTransforms().addAll(
-            yRotate = new Rotate(0, Rotate.Y_AXIS),                      
-            xRotate = new Rotate(0, Rotate.X_AXIS),
+            yRotate,                      
+            xRotate,
             new Translate(0, 0, 0)
         );
 		robot = new Robot();
-		//robot.mouseMove(960, 540); //can modify
-		//System.out.println(robot.getMouseX()+" "+robot.getMouseY());
 	}
 
 	@FXML
 	public void initialize(){
-
-		
-		System.out.println(anyPressed.get());
+		//System.out.println(anyPressed.get());
 		rightPressed.set(false);
-		System.out.println(anyPressed.get());
-
+		//System.out.println(anyPressed.get());
 		//load picture
-		PhongMaterial material_1 = new PhongMaterial();
+		material_1 = new PhongMaterial();
 		material_1.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/1.jpg")));
 		//material_1.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/earth-d.jpg")));
-		PhongMaterial material_3 = new PhongMaterial();
+		material_3 = new PhongMaterial();
 		material_3.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/3.jpg")));
 		
-		PhongMaterial material_2 = new PhongMaterial();
+		material_2 = new PhongMaterial();
 		material_2.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/2.jpg")));	
 		PhongMaterial material_4 = new PhongMaterial();
 		material_4.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/10.jpg")));	
@@ -226,7 +216,8 @@ public class WindowsController {
 		
 		pointLight = new PointLight();
         pointLight.setColor(Color.WHITE);
-        pointLight.getTransforms().add(new Translate(now_loc.getx(),-500,now_loc.getz()));
+        pointLight.getTransforms().add(new Translate(now_loc.box.getTranslateX(),-500,now_loc.box.getTranslateY()));
+		group.getChildren().add(now_loc.box_visible);
         group.getChildren().add(pointLight);
 		for(int i=0;i<mapbox_array.size();i++){
 			switch(mapbox_array.get(i).type.get_item_num()){
@@ -317,16 +308,17 @@ public class WindowsController {
 						dt+=1;
 						camera.translateYProperty().set(camera.getTranslateY()+(7*dt-70));	
 					}
-					System.out.println(camera.getTranslateY());
+					//System.out.println(camera.getTranslateY());
 					if(dt>=20){
 						camera.translateYProperty().set(tmp);
-						System.out.println("jump_flag=0");
+						//System.out.println("jump_flag=0");
 						jumping.set(false);
 					}
 				}
+				now_loc.set_visible(camera.getTranslateX(),camera.getTranslateY(),camera.getTranslateZ());
 				set_pointLight(camera.getTranslateX(),camera.getTranslateY(),camera.getTranslateZ());
 				mouse.set(false);
-				System.out.println(camera.getTranslateX()+" "+camera.getTranslateY()+" "+camera.getTranslateZ());
+				//System.out.println(camera.getTranslateX()+" "+camera.getTranslateY()+" "+camera.getTranslateZ());
 			}
 		};
 		anyPressed.addListener((obs, wasPressed, isNowPressed) ->{
@@ -343,6 +335,7 @@ public class WindowsController {
 	private void keyPressed(KeyEvent keyEvent){
 		switch (keyEvent.getCode()) {
 			case W:
+				System.out.print("w");
 				forwardPressed.set(true);
 				break;
 			case S:
@@ -356,9 +349,11 @@ public class WindowsController {
 				break;
 			case E:
 				camera.translateYProperty().set(camera.getTranslateY() - 200);
+				now_loc.set_visible(camera.getTranslateX(),camera.getTranslateY(),camera.getTranslateZ());
 				break;
 			case C:
 				camera.translateYProperty().set(camera.getTranslateY() + 200);
+				now_loc.set_visible(camera.getTranslateX(),camera.getTranslateY(),camera.getTranslateZ());
 				break;
 			case SPACE:
 				spacePressed.set(true);
@@ -393,60 +388,6 @@ public class WindowsController {
 			case DIGIT9:
 				num_9.set(true);
 				break;
-			// case W:
-			// 	camera.translateZProperty().set(camera.getTranslateZ() + velocity*Math.cos(yRotate.getAngle()*(Math.PI)/180));
-			// 	camera.translateXProperty().set(camera.getTranslateX() + velocity*Math.sin(yRotate.getAngle()*(Math.PI)/180));
-			// 	break;
-			// case S:
-			// 	camera.translateZProperty().set(camera.getTranslateZ() - velocity*Math.cos(yRotate.getAngle()*(Math.PI)/180));
-			// 	camera.translateXProperty().set(camera.getTranslateX() - velocity*Math.sin(yRotate.getAngle()*(Math.PI)/180));
-			// 	break;
-			// case D:
-			// 	camera.translateZProperty().set(camera.getTranslateZ() - velocity*Math.sin(yRotate.getAngle()*(Math.PI)/180));
-			// 	camera.translateXProperty().set(camera.getTranslateX() + velocity*Math.cos(yRotate.getAngle()*(Math.PI)/180));
-			// 	break;
-			// case A:
-			// 	camera.translateZProperty().set(camera.getTranslateZ() + velocity*Math.sin(yRotate.getAngle()*(Math.PI)/180));
-			// 	camera.translateXProperty().set(camera.getTranslateX() - velocity*Math.cos(yRotate.getAngle()*(Math.PI)/180));
-			// 	break;
-			// case E:
-			// 	camera.translateYProperty().set(camera.getTranslateY() - 200);
-			// 	break;
-			// case C:
-			// 	camera.translateYProperty().set(camera.getTranslateY() + 200);
-			// 	break;
-			// case SPACE:
-			// 	System.out.println("junp");
-			// 	if (jump_flag==0)
-			// 	{
-			// 		double tmp = camera.getTranslateY();	
-			// 		jump_flag=1;
-			// 		AnimationTimer timer = new AnimationTimer() {
-			// 			double dt=0;
-			// 			@Override
-			// 			public void handle(long now) {
-			// 				if(dt<20){
-			// 					dt+=1;
-			// 					camera.translateYProperty().set(camera.getTranslateY()+(2.4*dt-24));	
-			// 				}
-			// 				System.out.println(camera.getTranslateY());
-			// 				if(dt>=20){
-			// 					camera.translateYProperty().set(tmp);
-			// 					System.out.println("jump_flag=0");
-			// 					jump_flag=0;
-			// 					stop();
-			// 					//System.out.println("=0");
-			// 				}
-			// 			}
-			// 		};
-			// 		//System.out.println(hand.getTranslateY());
-			// 		timer.start();
-			// 		break;
-			// 	}
-			// 	else if(jump_flag==1){
-			// 		break;
-			// 	}
-			// 	break;
 			}
 		}
 		@FXML
@@ -494,8 +435,6 @@ public class WindowsController {
 				case DIGIT9:
 					num_9.set(false);
 					break;
-		//this.set_pointLight(camera.getTranslateX(),camera.getTranslateY(),camera.getTranslateZ());
-		//System.out.println(camera.getTranslateX()+" "+camera.getTranslateY()+" "+camera.getTranslateZ());
 			}
 		}
 	public void set_pointLight(double x, double y,double z){

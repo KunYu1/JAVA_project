@@ -1,9 +1,19 @@
-public class Person{
-    private Vec look_vector;
-    public Person(){
-        look_vector = new Vec(0, 1, 0);
+import javafx.scene.Node;
+import javafx.scene.shape.Box;
+public class Person {
+    Box box;
+    Box box_visible;
+    double old_x;
+    double old_y;
+    double old_z;
+    Person(){
+        box_visible = new Box(1, 1, 1);
+        box = new Box(10, 10, 10);
     }
-    public Vec get_version(){
-        return look_vector;
+    void set_visible(double x,double y, double z){
+        box_visible.setTranslateX(x+box.getTranslateX());
+        box_visible.setTranslateY(y+box.getTranslateY());
+        box_visible.setTranslateZ(z+box.getTranslateZ());
     }
+
 }
