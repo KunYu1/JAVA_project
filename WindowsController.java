@@ -132,9 +132,9 @@ public class WindowsController {
 			an_x += (anchorX - event.getSceneX())*0.1;
 			an_y += (anchorY - event.getSceneY())*0.1;
 			//System.out.println(an_x+" "+an_y);
-			if(angleX.get()+an_y<=-80){
+			if(angleX.get()+an_y<-90){
 				an_y = 0;        
-            } else if(angleX.get()+an_y>=80){
+            } else if(angleX.get()+an_y>90){
                 an_y = 0;            
             }
 			if(an_x!=0||an_y!=0)

@@ -46,10 +46,13 @@ public class Map{
             //System.out.println(l+" "+v_x*d_x+v_y*d_y+v_z*d_z);
             if(Math.abs(d_x)<800&&Math.abs(d_y)<800&&Math.abs(d_z)<800){
                 System.out.println(i+" "+d_x+" "+d_y+" "+d_z+" "+(v_x*d_x+v_y*d_y+v_z*d_z)/(100*l)+" "+l);
-                if((v_x*d_x+v_y*d_y+v_z*d_z)/(100*l)>0.99&&l<length){
+                if((v_x*d_x+v_y*d_y+v_z*d_z)/(100*l)>0.98&&l<length){
                     break_idx = i;
                     length =l;
-                }             
+                } else if((v_x*d_x+v_y*d_y+v_z*d_z)/(100*l)>0.96&&l<480){
+                    break_idx = i;
+                    length =l;  
+                }
             }
         }
         System.out.println(break_idx);
