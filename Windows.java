@@ -51,7 +51,8 @@ public class Windows extends Application {
 
         scene_init = new Scene(root_init,800,600); 
         scene = new Scene(root,800,600,true, SceneAntialiasing.BALANCED); 
-        scene.setCursor(Mouse);
+        scene_init.setCursor(Cursor.HAND);
+        scene.setCursor(Cursor.NONE);
 
         windowscon = (WindowsController)loader.getController();
         initcon = (InitController)loader_init.getController();
