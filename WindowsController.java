@@ -38,7 +38,6 @@ import javafx.beans.binding.BooleanBinding;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.scene.Scene;
 import javafx.scene.robot.Robot;
 import java.awt.AWTException;
 import javafx.scene.shape.Rectangle;
@@ -46,6 +45,7 @@ import javafx.scene.SubScene;
 import javafx.scene.SceneAntialiasing;
 import java.util.*;
 import javafx.scene.input.MouseButton;
+import javafx.scene.Cursor; 
 public class WindowsController {
 	String Key;
 	double x=0,y=0;
@@ -93,7 +93,7 @@ public class WindowsController {
 	private double anchorX, anchorY;
     private double anchorAngleXZ = 0;
     private double anchorAngleY = 0;
-    private double velocity = 10;	
+    private double velocity = 20;	
     private PerspectiveCamera perspectiveCamera;
 	private ArrayList<MapBox> mapbox_array;
 	//private Node now_loc;
@@ -151,6 +151,8 @@ public class WindowsController {
 				mouse.set(true);
             anchorX = event.getSceneX();
             anchorY = event.getSceneY();
+			scene.setCursor(Cursor.NONE);
+			subscene.setCursor(Cursor.NONE);
         });
 		scene.setOnMouseExited(event -> {
 			robot.mouseMove(960,540);
@@ -190,7 +192,7 @@ public class WindowsController {
 		//init map
 		group = new Group();
 		subscene = new SubScene(group, 800, 600, true,SceneAntialiasing.BALANCED);
-		mapmaker = new MapMaker();
+		//mapmaker = new MapMaker();
 		map = new Map();
 		mapbox_array = map.get_cube();
 		now_loc= new Person();
@@ -245,7 +247,7 @@ public class WindowsController {
 		
 		pointLight = new PointLight();
         pointLight.setColor(Color.WHITE);
-        pointLight.getTransforms().add(new Translate(now_loc.box.getTranslateX(),-500,now_loc.box.getTranslateY()));
+        pointLight.getTransforms().add(new Translate(now_loc.box.getTranslateX(),now_loc.box.getTranslateY(),now_loc.box.getTranslateY()));
 		group.getChildren().add(now_loc.box_visible);
         group.getChildren().add(pointLight);
 		now_meterial = material_1;
@@ -561,7 +563,7 @@ public class WindowsController {
 		}
 	public void set_pointLight(double x, double y,double z){
 		pointLight.setTranslateX(x);
-		pointLight.setTranslateY(y-100);
+		pointLight.setTranslateY(y);
 		pointLight.setTranslateZ(z);
 	}	
 

@@ -3,6 +3,7 @@ import javafx.stage.Window;
 import javafx.application.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Cursor;
 
 public class InitController {
 
@@ -13,6 +14,7 @@ public class InitController {
         this.main = main;
     }
     public void setScene(Scene scene){
+        scene.setCursor(Cursor.NONE);
         this.scene = scene;
     }
     // this method is called by clicking the button

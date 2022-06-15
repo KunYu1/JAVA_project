@@ -161,7 +161,7 @@ public class Map{
             mapbox_array.get(mapbox_array.size()-1).box.setMaterial(now_meterial);  
             group.getChildren().add(mapbox_array.get(mapbox_array.size()-1).box);
         }
-
+        save_map();
     }
     public void break_map(Group group, double now_x,double now_y,double now_z, double v_x,double v_y,double v_z){
         int break_idx = -1;
@@ -198,7 +198,7 @@ public class Map{
             group.getChildren().remove(mapbox_array.get(break_idx).box);
             mapbox_array.remove(break_idx);
         }
-
+        save_map();
     }
     public int find_map(double x,double y,double z){
         int flag = 0;
@@ -213,19 +213,17 @@ public class Map{
     public double line_length(double x,double y,double z,double dx,double dy,double dz){
         return Math.sqrt((x-dx)*(x-dx)+(y-dy)*(y-dy)+(z-dz)*(z-dz));
     }
-    //public void save_map(){
+    public void save_map(){
         //File file = new File("Map.txt");
-        //Scanner sc = new Scanner(file);
-        // try{
-        //     for(int i = 0;i<mapbox_array.size();i++){
-        //         Files.write(Paths.get("Map.txt"), mapbox_array.get(i).type.get_item_num()+" "+ mapbox_array.get(i).x+" "+ mapbox_array.get(i).y+" "+ mapbox_array.get(i).z, StandardCharsets.UTF_8);
-        //     }            
-        // }    catch (IOException e){
-        //     System.out.println("An error occurred.");
-        //     e.printStackTrace();
-        //   }
-
-
-        //sc.close();
-    //}
+        try{
+            FileWriter fw = new FileWriter("Map.txt");
+                for(int i = 0;i<mapbox_array.size();i++)
+                    fw.write( mapbox_array.get(i).type.get_item_num()+" "+ mapbox_array.get(i).x+" "+ mapbox_array.get(i).y+" "+ mapbox_array.get(i).z+"\n");
+                fw.flush();
+                fw.close();               
+        } catch (Exception e) {
+            System.out.println("Something Error");
+        }
+    
+    }
 }
