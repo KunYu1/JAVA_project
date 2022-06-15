@@ -1,30 +1,32 @@
 
-import java.io.File;
+import java.io.*;
 import java.util.*;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.image.Image;
 import javafx.scene.Group;
+import java.nio.file.*;
+import java.nio.charset.*;
 public class Map{
-    PhongMaterial material_1 = new PhongMaterial();
-    PhongMaterial material_3 = new PhongMaterial();
-    PhongMaterial material_2 = new PhongMaterial();
-    PhongMaterial material_4 = new PhongMaterial();
-    PhongMaterial material_5 = new PhongMaterial();	
-    PhongMaterial material_6 = new PhongMaterial();
-    PhongMaterial material_7 = new PhongMaterial();
-    PhongMaterial material_8 = new PhongMaterial();
-    PhongMaterial material_9 = new PhongMaterial();
+    // PhongMaterial material_1 = new PhongMaterial();
+    // PhongMaterial material_3 = new PhongMaterial();
+    // PhongMaterial material_2 = new PhongMaterial();
+    // PhongMaterial material_4 = new PhongMaterial();
+    // PhongMaterial material_5 = new PhongMaterial();	
+    // PhongMaterial material_6 = new PhongMaterial();
+    // PhongMaterial material_7 = new PhongMaterial();
+    // PhongMaterial material_8 = new PhongMaterial();
+    // PhongMaterial material_9 = new PhongMaterial();
     private ArrayList<MapBox> mapbox_array;
     public Map()throws Exception{
-        material_1.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/1.jpg")));
-        material_2.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/2.jpg")));
-        material_3.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/3.jpg")));
-        material_4.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/4.jpg")));
-        material_5.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/5.jpg")));
-        material_6.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/6.jpg")));
-        material_7.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/7.jpg")));
-        material_8.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/8.jpg")));
-        material_9.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/9.jpg")));
+        // material_1.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/1.jpg")));
+        // material_2.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/2.jpg")));
+        // material_3.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/3.jpg")));
+        // material_4.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/4.jpg")));
+        // material_5.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/5.jpg")));
+        // material_6.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/6.jpg")));
+        // material_7.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/7.jpg")));
+        // material_8.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/8.jpg")));
+        // material_9.setDiffuseMap(new Image(getClass().getResourceAsStream("texture/9.jpg")));
         mapbox_array = new ArrayList<MapBox>();
         int type;
         int x;
@@ -44,7 +46,7 @@ public class Map{
     public ArrayList<MapBox> get_cube(){
         return mapbox_array;
     }
-    public void construct_map(Group group, double now_x,double now_y,double now_z, double v_x,double v_y,double v_z){
+    public void construct_map(Group group, double now_x,double now_y,double now_z, double v_x,double v_y,double v_z, PhongMaterial now_meterial, int material_type){
         MapBox con_box;
         int con_idx = -1;
         double length = 100000;
@@ -155,8 +157,8 @@ public class Map{
                     the = ((v_x*(con_x-now_x-200)+v_y*(now_y-con_y)+v_z*(con_z-now_z)))/(leng*100);
                 }
             }
-            mapbox_array.add(new MapBox(1, (int)build_x/200, (int)build_y/200, (int)build_z/200));
-            mapbox_array.get(mapbox_array.size()-1).box.setMaterial(material_1);  
+            mapbox_array.add(new MapBox(material_type, (int)build_x/200, (int)build_y/200, (int)build_z/200));
+            mapbox_array.get(mapbox_array.size()-1).box.setMaterial(now_meterial);  
             group.getChildren().add(mapbox_array.get(mapbox_array.size()-1).box);
         }
 
@@ -211,4 +213,19 @@ public class Map{
     public double line_length(double x,double y,double z,double dx,double dy,double dz){
         return Math.sqrt((x-dx)*(x-dx)+(y-dy)*(y-dy)+(z-dz)*(z-dz));
     }
+    //public void save_map(){
+        //File file = new File("Map.txt");
+        //Scanner sc = new Scanner(file);
+        // try{
+        //     for(int i = 0;i<mapbox_array.size();i++){
+        //         Files.write(Paths.get("Map.txt"), mapbox_array.get(i).type.get_item_num()+" "+ mapbox_array.get(i).x+" "+ mapbox_array.get(i).y+" "+ mapbox_array.get(i).z, StandardCharsets.UTF_8);
+        //     }            
+        // }    catch (IOException e){
+        //     System.out.println("An error occurred.");
+        //     e.printStackTrace();
+        //   }
+
+
+        //sc.close();
+    //}
 }

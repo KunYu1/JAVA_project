@@ -107,7 +107,9 @@ public class WindowsController {
 	private PhongMaterial material_1;
 	private PhongMaterial material_2;
 	private PhongMaterial material_3;
+	private PhongMaterial now_meterial;
 	SubScene subscene;
+	int material_type = 1;
 	Camera camera ;
 	Rotate xRotate;
 	Rotate yRotate;
@@ -170,7 +172,7 @@ public class WindowsController {
 				double v_y = 100*Math.sin(angleX.get()*(Math.PI)/180);
 				double v_z = 100*Math.cos(angleX.get()*(Math.PI)/180)*Math.cos(angleY.get()*(Math.PI)/180);
 				//System.out.println(v_x+" "+v_y+" "+v_z);
-				map.construct_map(group, camera.getTranslateX(),camera.getTranslateY(),camera.getTranslateZ(),v_x,v_y,v_z);
+				map.construct_map(group, camera.getTranslateX(),camera.getTranslateY(),camera.getTranslateZ(),v_x,v_y,v_z,now_meterial,material_type);
 			}
 
 		});
@@ -246,13 +248,35 @@ public class WindowsController {
         pointLight.getTransforms().add(new Translate(now_loc.box.getTranslateX(),-500,now_loc.box.getTranslateY()));
 		group.getChildren().add(now_loc.box_visible);
         group.getChildren().add(pointLight);
+		now_meterial = material_1;
 		for(int i=0;i<mapbox_array.size();i++){
 			switch(mapbox_array.get(i).type.get_item_num()){
 				case 1:
 					mapbox_array.get(i).box.setMaterial(material_1);
 					break;
+				case 2:
+					mapbox_array.get(i).box.setMaterial(material_2);
+					break;
 				case 3:
 					mapbox_array.get(i).box.setMaterial(material_3);
+					break;
+				case 4:
+					mapbox_array.get(i).box.setMaterial(material_4);
+					break;
+				case 5:
+					mapbox_array.get(i).box.setMaterial(material_5);
+					break;
+				case 6:
+					mapbox_array.get(i).box.setMaterial(material_6);
+					break;
+				case 7:
+					mapbox_array.get(i).box.setMaterial(material_7);
+					break;
+				case 8:
+					mapbox_array.get(i).box.setMaterial(material_8);
+					break;
+				case 9:
+					mapbox_array.get(i).box.setMaterial(material_9);
 					break;
 			}
 			group.getChildren().add(mapbox_array.get(i).box);
@@ -279,39 +303,57 @@ public class WindowsController {
 				if(map.find_map(k_x*200, k_y*200, k_z*200)==1)
 					System.out.println(k_x+" "+k_y+" "+k_z);
 				if(num_1.get()){
+					material_type = 1;
+					now_meterial = material_1;
 					box.setMaterial(material_1);
 					Rect.setLayoutX(5);
 				}
 				if(num_2.get()){
+					material_type = 2;
+					now_meterial = material_2;
 					box.setMaterial(material_2);
 					Rect.setLayoutX(56);
 				}
 				if(num_3.get()){
+					material_type = 3;
+					now_meterial = material_3;
 					box.setMaterial(material_3);
 					Rect.setLayoutX(107);
 					
 				}
 				if(num_4.get()){
+					material_type = 4;
+					now_meterial = material_4;
 					box.setMaterial(material_4);
 					Rect.setLayoutX(158);
 				}
 				if(num_5.get()){
+					material_type =5;
+					now_meterial = material_5;
 					box.setMaterial(material_5);
 					Rect.setLayoutX(209);
 				}
 				if(num_6.get()){
+					material_type = 6;
+					now_meterial = material_6;
 					box.setMaterial(material_6);
 					Rect.setLayoutX(260);
 				}
 				if(num_7.get()){
+					material_type =7;
+					now_meterial = material_7;
 					box.setMaterial(material_7);
 					Rect.setLayoutX(311);
 				}
 				if(num_8.get()){
+					material_type =8;
+					now_meterial = material_8;
 					box.setMaterial(material_8);
 					Rect.setLayoutX(362);
 				}
 				if(num_9.get()){
+					material_type =9;
+					now_meterial = material_9;
 					box.setMaterial(material_9);
 					Rect.setLayoutX(413);
 				}
